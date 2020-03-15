@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xmu.oomall.freight.mapper.DefaultFreightMapper">
+
+    <resultMap id="defaultFreightMap" type="defaultFreightPo">
+        <id property="id" column="id"/>
+        <result property="destination" column="destination"/>
+        <result property="firstHeavyPrice" column="first_heavy_price"/>
+        <result property="continueHeavyPrice" column="continue_heavy_price"/>
+        <result property="over10Price" column="over10_price"/>
+        <result property="over50Price" column="over50_price"/>
+        <result property="over100Price" column="over100_price"/>
+        <result property="over300Price" column="over300_price"/>
+        <result property="requireDays" column="require_days"/>
+    </resultMap>
+
+    <select id="findAllDefaultFreight" parameterType="map" resultMap="defaultFreightMap">
+        select * from oomall_default_freight where is_deleted = 0
+        limit #{offSet},#{limit};
+    </select>
+
+    <select id="findDefaultFreightById" resultMap="defaultFreightMap">
+        select * from oomall_default_freight where id = #{id} and is_deleted = 0;
+    </select>
+
+    <insert id="addDefaultFreight" parameterType="defaultFreight">
+        insert into oomall_default_freight(id,
+                                    destination,
+                                    first_heavy_price,
+                                    continue_heavy_price,
+                                    over10_price,
+                                    over50_price,
+                                    over100_price,
+                                    over300_price,
+                                    require_days,
+                                    gmt_create,
+                                    gmt_modified)
+        values (#{id},
+                #{destination},
+                #{firstHeavyPrice},
+                #{continueHeavyPrice},
+                #{over10Price},
+                #{over50Price},
+                #{over100Price},
+                #{over300Price},
+                #{requireDays},
+                #{gmtCreate},
+                #{gmtModified});
+    </insert>
+
+    <update id="updateDefaultFreight" parameterType="defaultFreight">
+        update oomall_default_freight set
+            destination = #{destination},
+            first_heavy_price = #{firstHeavyPrice},
+            continue_heavy_price = #{continueHeavyPrice},
+            over10_price = #{over10Price},
+            over50_price = #{over50Price},
+            over100_price = #{over100Price},
+            over300_price = #{over300Price},
+            require_days = #{requireDays},
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+
+    <update id="deleteDefaultFreight" parameterType="map">
+        update oomall_default_freight
+        set is_deleted = 1,
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+</mapper>

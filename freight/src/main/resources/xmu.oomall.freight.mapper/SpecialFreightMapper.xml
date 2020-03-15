@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xmu.oomall.freight.mapper.SpecialFreightMapper">
+
+    <resultMap id="specialFreightMap" type="specialFreightPo">
+        <id property="id" column="id"/>
+        <result property="firstNumPiece" column="first_num_piece"/>
+        <result property="firstNumPiecePrice" column="first_num_piece_price"/>
+        <result property="continueNumPiece" column="continue_num_piece"/>
+        <result property="continueNumPiecePrice" column="continue_num_piece_price"/>
+    </resultMap>
+
+    <select id="findAllSpecialFreight" parameterType="map" resultMap="specialFreightMap">
+        select * from oomall_special_freight where is_deleted = 0
+        limit #{offSet},#{limit};
+    </select>
+
+    <select id="findSpecialFreightById" resultMap="specialFreightMap">
+        select * from oomall_special_freight where id = #{id} and is_deleted = 0;
+    </select>
+
+    <insert id="addSpecialFreight" parameterType="specialFreight">
+        insert into oomall_special_freight(id,
+                                    first_num_piece,
+                                    first_num_piece_price,
+                                    continue_num_piece,
+                                    continue_num_piece_price,
+                                    gmt_create,
+                                    gmt_modified)
+        values (#{id},
+                #{firstNumPiece},
+                #{firstNumPiecePrice},
+                #{continueNumPiece},
+                #{continueNumPiecePrice},
+                #{gmtCreate},
+                #{gmtModified});
+    </insert>
+
+    <update id="updateSpecialFreight" parameterType="specialFreight">
+        update oomall_special_freight set
+            first_num_piece = #{firstNumPiece},
+            first_num_piece_price = #{firstNumPiecePrice},
+            continue_num_piece = #{continueNumPiece},
+            continue_num_piece_price = #{continueNumPiecePrice},
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+
+    <update id="deleteSpecialFreight" parameterType="map">
+        update oomall_special_freight
+        set is_deleted = 1,
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+</mapper>

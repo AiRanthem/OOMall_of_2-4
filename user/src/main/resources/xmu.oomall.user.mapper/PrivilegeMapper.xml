@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xmu.oomall.user.mapper.PrivilegeMapper">
+
+    <select id="getAllRoles" resultType="Role">
+        select * from oomall_role where is_deleted = 0;
+    </select>
+
+    <select id="getRoleById" parameterType="Integer" resultType="Role">
+        select * from oomall_role where id = #{id} and is_deleted = 0;
+    </select>
+    
+    <insert id="insertRole" parameterType="Role">
+        insert into oomall_role(name, gmt_create, gmt_modified)
+        values (#{name},#{gmtCreate},#{gmtModified});
+    </insert>
+
+    <update id="updateRole" parameterType="Role">
+        update oomall_role set
+            name = #{name},
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+
+    <update id="deleteRole" parameterType="map">
+        update oomall_role
+        set is_deleted = 1,
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+
+    <select id="findAllPrivilegesByRoleId" parameterType="Integer" resultType="Privilege">
+        select * from oomall_privilege where role_id = #{roleId} and is_deleted = 0;
+    </select>
+
+    <insert id="insertPrivilege" parameterType="java.util.List">
+        insert into oomall_privilege(role_id, url, method, gmt_create, gmt_modified) values
+        <foreach collection="list" item="item" index="index" separator=",">
+         (#{item.roleId},#{item.url},#{item.method},#{item.gmtCreate},#{item.gmtModified})
+        </foreach>
+    </insert>
+
+    <update id="deletePrivileges" parameterType="map">
+        update oomall_privilege
+        set is_deleted = 1,
+            gmt_modified = #{gmtModified}
+        where role_id = #{roleId} and is_deleted = 0;
+    </update>
+</mapper>

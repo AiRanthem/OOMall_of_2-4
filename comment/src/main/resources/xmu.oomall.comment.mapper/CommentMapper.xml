@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xmu.oomall.comment.mapper.CommentMapper">
+
+    <resultMap id="CommentMap" type="CommentPo">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="content" column="content"/>
+        <result property="statusCode" column="status"/>
+        <result property="star" column="star"/>
+        <result property="productId" column="product_id"/>
+    </resultMap>
+
+    <select id="findCommentById" parameterType="Integer" resultMap="CommentMap">
+            select * from oomall_comment where id = #{id} and is_deleted = 0;
+    </select>
+
+    <insert id="insertComment" parameterType="Comment">
+        insert into oomall_comment(id,user_id, content, status, star, product_id, gmt_create, gmt_modified)
+        values (#{id},#{userId},#{content},#{statusCode},#{star},#{productId},#{gmtCreate},#{gmtModified});
+    </insert>
+
+    <update id="deleteComment" parameterType="map">
+        update oomall_comment
+        set is_deleted = 1,
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+
+    <update id="updateComment" parameterType="Comment">
+        update oomall_comment set
+            content = #{content},
+            status = #{statusCode},
+            star = #{star},
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+
+    <select id="findCommentsByProduct" parameterType="map" resultMap="CommentMap">
+            select * from oomall_comment where product_id = #{productId} and is_deleted = 0
+            limit #{offSet},#{limit};
+    </select>
+
+    <select id="findComments" parameterType="map" resultMap="CommentMap">
+        select * from oomall_comment where is_deleted = 0
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        <if test="productId != null">
+            and product_id = #{productId}
+        </if>
+        limit #{offSet},#{limit}
+    </select>
+
+</mapper>

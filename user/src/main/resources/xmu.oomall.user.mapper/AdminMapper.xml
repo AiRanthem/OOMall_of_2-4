@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xmu.oomall.user.mapper.AdminMapper">
+
+    <select id="getAllByAdminName" parameterType="map" resultType="AdminPo">
+        select * from oomall_admin where username = #{username} and is_deleted = 0;
+        limit #{offSet},#{limit};
+    </select>
+
+    <select id="getAdminById" parameterType="Integer" resultType="AdminPo">
+        select * from oomall_admin where id = #{id} and is_deleted = 0;
+    </select>
+
+    <select id="getAdminByRoleId" parameterType="Integer" resultType="AdminPo">
+        select * from oomall_admin where role_id = #{roleId} and is_deleted = 0;
+    </select>
+
+    <select id="getAdminByName" parameterType="String" resultType="AdminPo">
+        select * from oomall_admin where username = #{username} and is_deleted = 0;
+    </select>
+    
+    <insert id="insertAdmin" useGeneratedKeys="true" keyProperty="id">
+        insert into oomall_admin(password,username,gmt_create,gmt_modified,role_id)
+        values (#{password},#{username},#{gmtCreate},#{gmtModified},#{roleId});
+    </insert>
+
+    <update id="updateAdmin" parameterType="admin">
+        update oomall_admin set
+            password = #{password},
+            username = #{username},
+            role_id = #{roleId},
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+
+    <update id="deleteAdmin" parameterType="map">
+        update oomall_admin
+        set is_deleted = 1,
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+</mapper>

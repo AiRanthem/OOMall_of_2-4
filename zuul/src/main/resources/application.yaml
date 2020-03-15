@@ -1,0 +1,129 @@
+spring:
+  application:
+    name: zuul
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  profiles:
+    active: dev
+
+server:
+  port: 8400
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+mybatis:
+  #domain对象的包
+  type-aliases-package: xmu.oomall.zuul.domain
+  #mapper.xml所在的位置
+  mapper-locations: classpath:xmu.oomall.zuul.mapper/*.xml
+  configuration:
+    #自动将SQL中查出来的带下划线的字段，转换为驼峰标志，再去匹配类中的属性
+    map-underscore-to-camel-case: true
+
+oomall:
+  #最大付款时间, 单位分钟
+  maxpaytime: 30
+  #redis缓存失效时间，单位分钟
+  redisexpiretime: 1
+  #预提库存数量
+  predeductQty: 3
+
+zuul:
+  routes:
+    logService:
+      path: /logService/**
+      service-id: logService
+    adService:
+      Path: /adService/**
+      service-id: adService
+    afterSalesService:
+      Path: /afterSalesService/**
+      service-id: afterSalesService
+    paymentService:
+      Path: /paymentService/**
+      service-id: paymentService
+    discountService:
+      Path: /discountService/**
+      service-id: discountService
+    collectionService:
+      Path: /collectionService/**
+      service-id: collectionService
+    commentService:
+      Path: /commentService/**
+      service-id: commentService
+    goodsInfoService:
+      Path: /goodsInfoService/**
+      service-id: goodsInfoService
+    topicService:
+      Path: /topicService/**
+      service-id: topicService
+    footPrintService:
+      Path: /footPrintService/**
+      service-id: footPrintService
+    orderService:
+      Path: /orderService/**
+      service-id: orderService
+    cartService:
+      Path: /cartService/**
+      service-id: cartService
+    shareService:
+      Path: /shareService/**
+      service-id: shareService
+    userInfoService:
+      Path: /userInfoService/**
+      service-id: userInfoService
+    freightService:
+      Path: /freightService/**
+      service-id: freightService
+    addressService:
+      Path: /addressService/**
+      service-id: addressService
+    logisticsService:
+      Path: /logisticsService/**
+      service-id: logisticsService
+
+  #    hello:
+#      path: /hello/**
+#      url: http://localhost:8080/
+#      #serviceId: hello
+#    user:
+#      path: /user/**
+#      url: http://localhost:8080/
+#    userInfoService:
+#      path: /userInfoService/**
+#      url: http://localhost:8080/
+  sensitive-headers:
+
+eureka:
+  client:
+    service-url:
+      #      2-4
+      #defaultZone: http://47.100.32.48:8761/eureka
+
+      #      3-6
+      #defaultZone: http://112.124.5.149:8761/eureka/
+
+  #      3-8
+  #      defaultZone: http://47.96.159.71:8888/eureka/
+
+  #      2-1
+      defaultZone: http://139.196.253.120:8761/eureka/
+
+  #      2-2
+  #      defaultZone: http://47.97.43.141:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: zuul:8400
+    ip-address:  47.100.32.48
+
+

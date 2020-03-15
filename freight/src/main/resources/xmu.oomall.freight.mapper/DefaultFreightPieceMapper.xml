@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xmu.oomall.freight.mapper.DefaultPieceFreightMapper">
+
+    <resultMap id="defaultPieceFreightMap" type="defaultPieceFreightPo">
+        <id property="id" column="id"/>
+        <result property="destination" column="destination"/>
+        <result property="unitRate" column="unit_rate"/>
+    </resultMap>
+
+    <select id="findAllDefaultPieceFreight" parameterType="map" resultMap="defaultPieceFreightMap">
+        select * from oomall_default_piece_freight where is_deleted = 0
+        limit #{offSet},#{limit};
+    </select>
+
+    <select id="findDefaultPieceFreightById" resultMap="defaultPieceFreightMap">
+        select * from oomall_default_piece_freight where id = #{id} and is_deleted = 0;
+    </select>
+
+    <insert id="addDefaultPieceFreight" parameterType="defaultPieceFreight">
+        insert into oomall_default_piece_freight(id,
+                                          destination,
+                                          unit_rate,
+                                          gmt_create,
+                                          gmt_modified)
+        values (#{id},
+                #{destination},
+                #{unitRate},
+                #{gmtCreate},
+                #{gmtModified});
+    </insert>
+
+    <update id="updateDefaultPieceFreight" parameterType="defaultPieceFreight">
+        update oomall_default_piece_freight set
+            destination = #{destination},
+            unit_rate = #{unitRate},
+            gmt_modified = #{gmrModified}
+        where id = #{id};
+    </update>
+
+    <update id="deleteDefaultPieceFreight" parameterType="map">
+        update oomall_default_piece_freight
+        set is_deleted = 1,
+            gmt_modified = #{gmtModified}
+        where id = #{id}
+    </update>
+</mapper>

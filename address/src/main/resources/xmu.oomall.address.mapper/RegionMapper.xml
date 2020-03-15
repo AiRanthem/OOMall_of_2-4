@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xmu.oomall.address.mapper.RegionMapper">
+
+    <select id="getAllRegion">
+        select * from oomall_region;
+    </select>
+
+    <select id="getRegionsByPid" parameterType="Integer" resultType="region">
+        select * from oomall_region where pid = #{pid};
+    </select>
+
+    <select id="getRegionById" parameterType="Integer" resultType="region">
+        select * from oomall_region where id = #{id};
+    </select>
+
+    <select id="getRegionByPostcode">
+        select * from oomall_region where post_code = #{post_code};
+    </select>
+
+    <insert id="addRegion" parameterType="region" useGeneratedKeys="true" keyProperty="id">
+        insert into oomall_region(id, pid, `name`, `type`, post_code)
+        values (#{id},#{pid}, #{name}, #{type}, #{post_code});
+    </insert>
+
+    <update id="updateRegion" parameterType="region" useGeneratedKeys="true" >
+        update oomall_region set
+            pid = #{pid},
+            `name` = #{name},
+            `type` = #{type},
+            post_code = #{post_code}
+        where id = #{id};
+    </update>
+
+    <delete id="deleteRegions" parameterType="Integer">
+        delete from oomall_region where id  = #{id}
+    </delete>
+</mapper>

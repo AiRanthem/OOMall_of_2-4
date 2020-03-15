@@ -1,0 +1,37 @@
+server:
+  port: 7004
+
+spring:
+  application:
+    name: logisticsService
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+eureka:
+  client:
+    service-url:
+      #      2-4
+      #      defaultZone: http://47.100.32.48:8761/eureka
+
+      #      3-6
+      defaultZone: http://112.124.5.149:8761/eureka/
+
+  #      3-8
+  #      defaultZone: http://47.96.159.71:8888/eureka/
+
+  #      2-1
+  #      defaultZone: http://148.70.28.112:8761/eureka/
+
+  #      2-2
+  #      defaultZone: http://47.97.43.141:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: logisticsService:7004
+    ip-address: 101.132.238.210

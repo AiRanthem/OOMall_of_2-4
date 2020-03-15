@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xmu.oomall.user.mapper.UserMapper">
+
+    <resultMap id="userMap" type="User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="nickname" column="nickname"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="birthday" column="birthday"/>
+        <result property="mobile" column="mobile"/>
+        <result property="rebate" column="rebate"/>
+        <result property="avatar" column="avatar"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="userLevel" column="user_level"/>
+        <result property="wxOpenId" column="wx_open_id"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="roleId" column="role_id"/>
+    </resultMap>
+
+    <select id="getAll" parameterType="map" resultType="UserPo">
+        select * from oomall_user where is_deleted = 0
+        limit #{offSet},#{limit};
+    </select>
+
+    <select id="getUserById" parameterType="Integer" resultType="UserPo">
+        select * from oomall_user where id = #{id} and is_deleted = 0;
+    </select>
+
+    <select id="getUserByMobile" parameterType="String" resultType="UserPo">
+        select * from oomall_user where mobile = #{mobile} and is_deleted = 0;
+    </select>
+
+    <select id="getUserByName" parameterType="String" resultType="UserPo">
+        select * from oomall_user where name = #{name} and is_deleted = 0;
+    </select>
+    
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="user">
+        insert into oomall_user(password,name,gender,birthday,mobile,nickname,rebate,avatar,last_login_time,last_login_ip,user_level,wx_open_id,session_key,gmt_create,gmt_modified)
+        values (#{password},#{name},#{gender},#{birthday},#{mobile},#{nickname},#{rebate},#{avatar},#{lastLoginTime},#{lastLoginIp},#{userLevel},#{wxOpenId},#{sessionKey},#{gmtCreate},#{gmtModified});
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update oomall_user set
+            password = #{password},
+            name = #{name},
+            gender = #{gender},
+            birthday = #{birthday},
+            mobile = #{mobile},
+            nickname = #{nickname},
+            rebate = #{rebate},
+            avatar = #{avatar},
+            last_login_time = #{lastLoginTime},
+            last_login_ip = #{lastLoginIp},
+            user_level = #{userLevel},
+            wx_open_id = #{wxOpenId},
+            session_key = #{sessionKey},
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+
+    <update id="deleteUser" parameterType="map">
+        update oomall_user
+        set is_deleted = 1,
+            gmt_modified = #{gmtModified}
+        where id = #{id};
+    </update>
+</mapper>
